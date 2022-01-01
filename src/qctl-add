@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+QctlLibDir="%LIB_DIR%"
+
+set -Eeu
+
+
+done
