@@ -2,7 +2,10 @@
 
 set -Eeu
 
+# Environment variables set by other scripts
+# Strings will be replaced by test.sh , PKGBUILD or other packaging script
 QctlLibDir="%LIB_DIR%"
+
 LoadShells=("${QctlLibDir}/main.sh")
 
 # Load main library
@@ -11,6 +14,6 @@ for file in "${LoadShells[@]}"; do
 done
 
 # CurrentDir
-ScriptDir="$(readlinkf)"
+ScriptDir="$(readlinkf "${0}")"
 
-echo "${ScriptDir}"
+
