@@ -71,5 +71,19 @@ readlinkf(){
   readlinkf_posix "${@}"
 }
 
+# LoadShellFIles <file1> <file2> ...
+LoadShellFIles(){
+    local _file
+    for _file in "${@}"; do
+        [[ -e "${_file}" ]] && source "${_file}"
+    done
+}
 
+QctlLibDir="$(readlinkf "${0}")"
+
+Librarys=(
+    "config.sh"
+)
+
+LoadShellFIles "${Librarys[@]}"
 
