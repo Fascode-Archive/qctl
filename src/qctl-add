@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
 
-QctlLibDir="%LIB_DIR%"
-
 set -Eeu
 
+QctlLibDir="%LIB_DIR%"
+LoadShells=("${QctlLibDir}/main.sh")
 
+# Load main library
+for file in "${LoadShells[@]}"; do
+    [[ -e "${file}" ]] && source "${file}"
 done
+
+# CurrentDir
+ScriptDir="$(readlinkf)"
+
+echo "${ScriptDir}"
