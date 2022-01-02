@@ -75,14 +75,18 @@ readlinkf(){
 LoadShellFIles(){
     local _file
     for _file in "${@}"; do
-        [[ -e "${_file}" ]] && source "${_file}"
+        if [[ -e "${_file}" ]]; then 
+          source "${_file}"
+        fi
     done
 }
 
-QctlLibDir="$(readlinkf "${0}")"
+#QctlLibDir="$(readlinkf "${0}")"
 
 Librarys=(
-    "config.sh"
+    "${QctlLibDir}/msg.sh"
+    "${QctlLibDir}/trap.sh"
+    "${QctlLibDir}/config.sh"
 )
 
 LoadShellFIles "${Librarys[@]}"
