@@ -1,19 +1,49 @@
-#!/usr/bin/env bash
+# shellcheck disable=SC2288
+%COMMON_CODE%
 
-set -Eeu
+HelpDoc(){
+    echo "usage qctl-add [option] [Name]"
+    echo
+    echo "Add new virtual machine" 
+    echo
+    echo " General options:"
+    echo "    -h | --help              This help message"
+}
 
-# Environment variables set by other scripts
-# Strings will be replaced by test.sh , PKGBUILD or other packaging script
-QctlLibDir="%LIB_DIR%"
+Main(){
+    CreateNewVM "${Name}"
+}
 
-LoadShells=("${QctlLibDir}/main.sh")
+CheckBashVersion
 
-# Load main library
-for file in "${LoadShells[@]}"; do
-    [[ -e "${file}" ]] && source "${file}"
+# Parse options
+OPTS=("h") OPTL=("help")
+GETOPT=(-o "$(printf "%s," "${OPTS[@]}")" -l "$(printf "%s," "${OPTL[@]}")" -- "${@}")
+set +Eeu
+getopt "${GETOPT[@]}" 1> /dev/null 2>&1 || exit 1 # 引数エラー判定
+readarray -t OPT < <(getoptses "${GETOPT[@]}") # 配列に代入
+set -eEu
+
+eval set -- "${OPT[@]}"
+unset OPT OPTS OPTL GETOPT
+
+while true; do
+    case "${1}" in
+        -h | --help)
+            HelpDoc
+            exit 0
+            ;;
+        --)
+            shift 1
+            break
+            ;;
+        *)
+            MsgError "Argument exception error '${1}'"
+            MsgError "Please report this error to the developer." 1
+            ;;
+    esac
 done
 
-# CurrentDir
-ScriptDir="$(readlinkf "${0}")"
+Name="${1-""}"
 
-
+Main
