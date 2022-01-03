@@ -87,6 +87,9 @@ Librarys=(
     "${QctlLibDir}/msg.sh"
     "${QctlLibDir}/trap.sh"
     "${QctlLibDir}/config.sh"
+    "${QctlLibDir}/prepare.sh"
+    "$QctlLibDir/add.sh"
+    "$QctlLibDir/getoptses/getoptses.sh"
 )
 
 LoadShellFIles "${Librarys[@]}"
