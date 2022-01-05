@@ -94,6 +94,8 @@ Librarys=(
     "${QctlLibDir}/prepare.sh"
     "$QctlLibDir/add.sh"
     "$QctlLibDir/getoptses/getoptses.sh"
+    "${QctlLibDir}/list.sh"
+
 )
 
 LoadShellFIles "${Librarys[@]}"
