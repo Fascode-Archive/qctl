@@ -13,18 +13,12 @@ Main(){
     CreateNewVM "${Name}"
 }
 
-CheckBashVersion
-
 # Parse options
 OPTS=("h") OPTL=("help")
-GETOPT=(-o "$(printf "%s," "${OPTS[@]}")" -l "$(printf "%s," "${OPTL[@]}")" -- "${@}")
-set +Eeu
-getopt "${GETOPT[@]}" 1> /dev/null 2>&1 || exit 1 # 引数エラー判定
-readarray -t OPT < <(getoptses "${GETOPT[@]}") # 配列に代入
-set -eEu
+ParseCmdOpt SHORT="$(printf "%s" "${OPTS[@]}")" LONG="$(printf "%s," "${OPTL[@]}")" -- "${@}" || exit 1
 
-eval set -- "${OPT[@]}"
-unset OPT OPTS OPTL GETOPT
+eval set -- "${OPTRET[@]}"
+unset OPTRET OPTS OPTL
 
 while true; do
     case "${1}" in
