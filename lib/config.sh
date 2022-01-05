@@ -32,7 +32,8 @@ ConfigFile="$(GetConfigFile)"
 
 # GetConfigValue <Section> <Param>
 GetConfigValue(){
-    _crshini_get "${ConfigFile}" "${@}"
+    #shellcheck disable=SC2005
+    eval echo "$(_crshini_get "${ConfigFile}" "${@}" | sed 's/^[[:blank:]]*//')"
 }
 
 # SetConfigToFile <Section> <Param> <Value>
