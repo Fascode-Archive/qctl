@@ -86,6 +86,12 @@ LoadShellFIles(){
 
 #QctlLibDir="$(readlinkf "${0}")"
 
+WorkInProgress(){
+  MsgError "I'm sorry this feature is work in progress."
+  return 1
+}
+
+
 Librarys=(
     "${QctlLibDir}/msg.sh"
     "${QctlLibDir}/parseopt.sh"

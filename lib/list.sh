@@ -1,9 +1,9 @@
 GetVMList(){
-    :
+    WorkInProgress
 }
 
 GetArchList(){
-    :
+    WorkInProgress
 }
 
 GetVMFileList(){
