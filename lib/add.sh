@@ -8,9 +8,16 @@ CreateNewVM(){
        return 1
     }
 
+    local _FullPath="${_ConfigDir}/${_Name}"
+
     _ConfigDir="$(GetConfigDir)"
 
-    echo -e "[VM]\nName = ${_Name}" > "${_ConfigDir}/${_Name}" && {
+    if [[ -e "${_FullPath}" ]; then
+        MsgError "すでに同じ名前の仮想マシンが存在しています"]
+        return 1
+    fi
+
+    echo -e "[VM]\nName = ${_Name}" > "${_FullPath}" && {
         MsgInfo "$_Name を作成しました"
         return 0
     }
