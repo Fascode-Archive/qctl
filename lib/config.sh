@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export _crshini_debug=true
+
 # Load Libcrshini
 CrshiniList=(
     "${QctlLibDir}/../crshini/src/libcrshini"
