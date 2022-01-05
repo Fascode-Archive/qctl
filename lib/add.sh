@@ -12,8 +12,8 @@ CreateNewVM(){
 
     _ConfigDir="$(GetConfigDir)"
 
-    if [[ -e "${_FullPath}" ]; then
-        MsgError "すでに同じ名前の仮想マシンが存在しています"]
+    if [[ -e "${_FullPath}" ]]; then
+        MsgError "すでに同じ名前の仮想マシンが存在しています"
         return 1
     fi
 
