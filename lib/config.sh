@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export _crshini_debug=true
+[[ "${ShowDebugMsg}" = false ]] || export _crshini_debug=true
 
 # Load Libcrshini
 CrshiniList=(
