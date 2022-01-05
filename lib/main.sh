@@ -79,7 +79,7 @@ LoadShellFIles(){
           typeset -f MsgDebug &> /dev/null && MsgDebug "Loaded script: ${_file}"
           source "${_file}"
         else
-          typeset -f MsgWarn &> /dev/null && MsgWarn "${_file} was not found"
+          typeset -f MsgDebug &> /dev/null && MsgDebug "${_file} was not found"
         fi
     done
 }
@@ -91,6 +91,7 @@ WorkInProgress(){
   return 1
 }
 
+: "${ShowDebugMsg=false}"
 
 Librarys=(
     "${QctlLibDir}/msg.sh"

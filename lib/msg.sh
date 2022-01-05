@@ -17,6 +17,7 @@ MsgWarn(){
 }
 
 MsgDebug(){
+    [[ "${ShowDebugMsg}" = true ]] || return 0
     MsgCommon "Debug: ${*}" >&2
 }
 
