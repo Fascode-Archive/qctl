@@ -76,7 +76,10 @@ LoadShellFIles(){
     local _file
     for _file in "${@}"; do
         if [[ -e "${_file}" ]]; then 
+          typeset -f MsgDebug &> /dev/null && MsgDebug "Loaded script: ${_file}"
           source "${_file}"
+        else
+          typeset -f MsgWarn &> /dev/null && MsgWarn "${_file} was not found"
         fi
     done
 }
@@ -85,6 +88,7 @@ LoadShellFIles(){
 
 Librarys=(
     "${QctlLibDir}/msg.sh"
+    "${QctlLibDir}/parseopt.sh"
     "${QctlLibDir}/trap.sh"
     "${QctlLibDir}/config.sh"
     "${QctlLibDir}/prepare.sh"
@@ -93,4 +97,4 @@ Librarys=(
 )
 
 LoadShellFIles "${Librarys[@]}"
-
+CheckBashVersion
