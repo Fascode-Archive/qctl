@@ -8,9 +8,9 @@ CreateNewVM(){
        return 1
     }
 
-    local _FullPath="${_ConfigDir}/${_Name}"
-
     _ConfigDir="$(GetConfigDir)"
+
+    local _FullPath="${_ConfigDir}/${_Name}"
 
     if [[ -e "${_FullPath}" ]]; then
         MsgError "すでに同じ名前の仮想マシンが存在しています"
