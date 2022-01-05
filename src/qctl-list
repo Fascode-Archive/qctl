@@ -16,7 +16,7 @@ ShowVMList(){
 }
 
 ShowVMFileList(){
-    :
+    GetVMFileList
 }
 
 ShowArchList(){

@@ -14,4 +14,6 @@ GetVMFileList(){
         find "${_VMDir}" -mindepth 1 -maxdepth 1 -type f 
     )
 
+    printf "%s\n" "${_FileList[@]}"
+    return 0
 }
