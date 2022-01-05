@@ -1,0 +1,72 @@
+%COMMON_CODE%
+ 
+HelpDoc(){
+    echo "usage qctl-list [option]"
+    echo
+    echo "Show she list of virtual machine that is managed by qctl" 
+    echo
+    echo " General options:"
+    echo "         --architecture      Show the architecture list"
+    echo "    -f | --file              Show the config file list"
+    echo "    -h | --help              This help message"
+}
+
+ShowVMList(){
+    :
+}
+
+ShowVMFileList(){
+    :
+}
+
+ShowArchList(){
+    :
+}
+
+
+Main(){
+    if typeset -f "Show${ListMode}List" 1> /dev/null; then
+        eval "Show${ListMode}List"
+        return
+    else
+        MsgError "Unknown list type ($ListMode)"
+        return 1
+    fi
+}
+
+ListMode="VM"
+
+# Parse options
+OPTS=("fh") OPTL=("help,architecture")
+ParseCmdOpt SHORT="$(printf "%s" "${OPTS[@]}")" LONG="$(printf "%s," "${OPTL[@]}")" -- "${@}" || exit 1
+eval set -- "${OPTRET[@]}"
+unset OPTRET OPTS OPTL
+
+while true; do
+    case "${1}" in
+        --architecture)
+            ListMode="Arch"
+            shift 1
+            ;;
+        -f | --file)
+            ListMode="VMFile"
+            shift 1
+            ;;
+        -h | --help)
+            HelpDoc
+            exit 0
+            ;;
+        --)
+            shift 1
+            break
+            ;;
+        *)
+            MsgError "Argument exception error '${1}'"
+            MsgError "Please report this error to the developer." 1
+            ;;
+    esac
+done
+
+
+Main
+

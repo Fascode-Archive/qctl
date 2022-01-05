@@ -16,7 +16,6 @@ Main(){
 # Parse options
 OPTS=("h") OPTL=("help")
 ParseCmdOpt SHORT="$(printf "%s" "${OPTS[@]}")" LONG="$(printf "%s," "${OPTL[@]}")" -- "${@}" || exit 1
-
 eval set -- "${OPTRET[@]}"
 unset OPTRET OPTS OPTL
 
