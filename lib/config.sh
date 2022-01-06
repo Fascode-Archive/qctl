@@ -11,7 +11,7 @@ CrshiniList=(
 LoadShellFIles "${CrshiniList[@]}"
 
 # Define functions
-GetConfigFile(){
+GetMainConfigFilePath(){
     local _config=(
         "${QctlLibDir}/../qctl.conf"
         "${XDG_CONFIG_HOME:-"${HOME}/.config"}/qctl.conf"
@@ -28,16 +28,16 @@ GetConfigFile(){
     MsgError "Config file was not found."
     return 1
 }
-ConfigFile="$(GetConfigFile)"
+ConfigFile="$(GetMainConfigFilePath)"
 
-# GetConfigValue <Section> <Param>
-GetConfigValue(){
+# GetMainConfigValue <Section> <Param>
+GetMainConfigValue(){
     #shellcheck disable=SC2005
     eval echo "$(_crshini_get "${ConfigFile}" "${@}" | sed 's/^[[:blank:]]*//')"
 }
 
-# SetConfigToFile <Section> <Param> <Value>
-SetConfigToFile(){
+# SetMainConfigToFile <Section> <Param> <Value>
+SetMainConfigToFile(){
     _crshini_set "${ConfigFile}"
 }
 

@@ -1,6 +1,6 @@
 PrepareConfigDir(){
     local _ConfigDir
-    _ConfigDir="$(GetConfigValue "Main" "ConfigDir" | sed 's/^[[:blank:]]*//')"
+    _ConfigDir="$(GetMainConfigValue "Main" "ConfigDir" | sed 's/^[[:blank:]]*//')"
 
     [[ -n "${_ConfigDir}" ]] || {
         MsgError "Failed to get vm directory path."
