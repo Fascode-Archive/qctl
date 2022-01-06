@@ -95,6 +95,7 @@ WorkInProgress(){
 
 Librarys=(
     "${QctlLibDir}/msg.sh"
+    "${QctlLibDir}/shellfunc.sh"
     "${QctlLibDir}/parseopt.sh"
     "${QctlLibDir}/trap.sh"
     "${QctlLibDir}/config.sh"
@@ -102,6 +103,8 @@ Librarys=(
     "$QctlLibDir/add.sh"
     "$QctlLibDir/getoptses/getoptses.sh"
     "${QctlLibDir}/list.sh"
+    "$QctlLibDir/power.sh"
+    "$QctlLibDir/vm.sh"
 
 )
 
