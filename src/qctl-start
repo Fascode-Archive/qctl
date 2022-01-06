@@ -1,0 +1,5 @@
+
+%COMMON_CODE%
+
+StartVM "${1}"
+
