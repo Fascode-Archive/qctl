@@ -71,6 +71,7 @@ GetDiskUUIDFromPath(){
 }
 
 # Return UUID-simlimk path
+# ディスクのパスからUUIDのシンボリックリンクのフルパスを返す
 # GetDiskUUIDPathFromPath <Image Path>
 GetDiskUUIDPathFromPath(){
     local _DiskDir _TargetPath="${1-""}" _UUID _Path
@@ -78,9 +79,44 @@ GetDiskUUIDPathFromPath(){
     while read -r _UUID_FullPath; do
         _UUID="$(basename "${_UUID_FullPath}")"
         _Path="$(readlinkf "${_UUID}")"
-        if [[ "${_Path}" = "${_TargetPath}" ]]; then
-            echo "${_Path}"
+        if [[ "$(basename "${_Path}")" = "${_UUID}" ]]; then
+            echo "${_UUID_FullPath}"
             return 0
         fi
     done < <(find "${_DiskDir}" -mindepth 2 -maxdepth 2 -type l)
+    return 1
 }
+
+GetDiskUUIDPathFromUUID(){
+    local _DiskDir
+    _DiskDir="$(GetDiskDir)"
+    find "${_DiskDir}" -mindepth 2 -maxdepth 2 -type l -name "${1}"
+}
+
+# Remove
+RemoveDisk(){
+    local _Target="${1-""}"
+
+    [[ -n "${_Target}" ]] || {
+        MsgError "Usage: RemoveDisk <UUID or Path>"
+    }
+
+    if IsUUID "${_Target}"; then
+        MsgDebug "$_Target is UUID"
+        _Target="$(GetPathFromDiskUUID "${_Target}")"
+    else
+        MsgDebug "$_Target is path."
+        if ! IsUUID "$(basename "${_Target}")"; then
+            MsgDebug "Get UUID from path"
+            _Target="$(GetDiskUUIDPathFromPath "${_Target}")"
+        fi
+    fi
+
+    #_Target="$(GetDiskUUIDPathFromUUID "${_Target}")"
+    MsgDebug "Remove ${_Target}"
+    rm -f "${_Target}" && {
+        MsgInfo "$_Target was successfully removed"
+        return 0
+    }
+}
+
