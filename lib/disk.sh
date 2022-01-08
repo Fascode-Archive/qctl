@@ -45,7 +45,8 @@ GetPathFromDiskUUID(){
         return 1
     }
 
-    readlinkf "$(find "${_DiskDir}" -name "${_UUID}" -mindepth 2 -maxdepth 2 -type l)"
+    #readlinkf "$(find "${_DiskDir}" -name "${_UUID}" -mindepth 2 -maxdepth 2 -type l)"
+    readlinkf "$(PrintArray "${_UUID_FullPath_List[@]}" | grep -E "/${_UUID}$")"
 }
 
 GetDiskUUIDList(){
