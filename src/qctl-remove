@@ -1,0 +1,52 @@
+%COMMON_CODE%
+
+HelpDoc(){
+    echo "usage qctl-remve [option] [Type] [Name, Path or UUID]"
+    echo
+    echo "Remove virtual machine or new disk" 
+    echo " Type:"
+    echo "    disk                     Add disk to datebase"
+    echo "    vm                       Add new virtual machine"
+    echo
+    echo " General options:"
+    echo "    -h | --help              This help message"
+}
+
+Main(){
+    case "${Type}" in
+        "vm")
+            RemoveVM "${Name}"
+            ;;
+        "disk")
+            RemoveDisk "${Name}"
+            ;;
+    esac
+}
+
+# Parse options
+OPTS=("h") OPTL=("help")
+ParseCmdOpt SHORT="$(printf "%s" "${OPTS[@]}")" LONG="$(printf "%s," "${OPTL[@]}")" -- "${@}" || exit 1
+eval set -- "${OPTRET[@]}"
+unset OPTRET OPTS OPTL
+
+while true; do
+    case "${1}" in
+        -h | --help)
+            HelpDoc
+            exit 0
+            ;;
+        --)
+            shift 1
+            break
+            ;;
+        *)
+            MsgError "Argument exception error '${1}'"
+            MsgError "Please report this error to the developer." 1
+            ;;
+    esac
+done
+
+Type="${1-""}"
+Name="${2-""}"
+
+Main
