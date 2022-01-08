@@ -114,7 +114,8 @@ RemoveDisk(){
 
     #_Target="$(GetDiskUUIDPathFromUUID "${_Target}")"
     MsgDebug "Remove ${_Target}"
-    rm -f "${_Target}" && {
+    [[ -e "$_Target" ]] && {
+        rm -f "${_Target}"
         MsgInfo "$_Target was successfully removed"
         return 0
     }
