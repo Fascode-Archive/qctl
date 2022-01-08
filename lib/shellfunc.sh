@@ -3,5 +3,6 @@ CheckFunctionDefined(){
 }
 
 PrintArray(){
+    (( $# >= 1 )) || return 0
     printf "%s\n" "${@}"
 }

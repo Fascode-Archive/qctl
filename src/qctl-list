@@ -15,10 +15,8 @@ HelpDoc(){
 ShowVMList(){
     local _File _Output
     while read -r _File;do
-        _Output+=("$(_crshini_get "${_File}" "VM" "Name")")
+        _crshini_get "${_File}" "VM" "Name"
     done < <(GetVMFileList)
-
-    printf "%s\n" "${_Output[@]}"
 }
 
 ShowVMFileList(){
@@ -30,7 +28,10 @@ ShowArchList(){
 }
 
 ShowDiskList(){
-    GetDiskPathList
+    while read -r _disk; do
+        _UUID=$(GetDiskUUIDFromPath "${_disk}")
+        echo "${_UUID}=${_disk}"
+    done < <(GetDiskPathList)
 }
 
 
