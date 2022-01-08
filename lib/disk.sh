@@ -9,7 +9,7 @@ AddNewDisk(){
     }
     
     while true; do
-        _UUID="$(genuuid)"
+        _UUID="$(uuidgen)"
         _Link="${_DiskDir}/${_DiskType}/${_UUID}"
 
         [[ -e "${_Link}" ]] && continue
