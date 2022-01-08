@@ -105,7 +105,7 @@ Librarys=(
     "${QctlLibDir}/list.sh"
     "$QctlLibDir/power.sh"
     "$QctlLibDir/vm.sh"
-
+    "${QctlLibDir}/disk.sh"
 )
 
 LoadShellFIles "${Librarys[@]}"

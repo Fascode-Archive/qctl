@@ -1,6 +1,6 @@
 # AddNewDisk <Type> <Path>
 AddNewDisk(){
-    local _DiskDir _DiskFile="${2}" _DiskType="${1-"None"}" _UUID _Link
+    local _DiskDir _DiskFile="${1}" _DiskType="${2-"None"}" _UUID _Link
     _DiskDir="$(GetDiskDir)"
 
     [[ -e "${_DiskFile}" ]] || {
