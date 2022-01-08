@@ -9,7 +9,7 @@ MakeNewDir(){
 
     for _Dir in "${@}" ; do
         { [[ ! -d "${_Dir}" ]] && [[ ! -e "${_Dir}" ]]; } && {
-            MsgWarn "${_ConfigDir} was not found. Creating ..."
+            MsgWarn "${_Dir} was not found. Creating ..."
             mkdir -p "${_Dir}"
         }
     done
