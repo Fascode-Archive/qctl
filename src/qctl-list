@@ -7,6 +7,7 @@ HelpDoc(){
     echo
     echo " General options:"
     echo "         --architecture      Show the architecture list"
+    echo "    -d | --disk              Show the disk list"
     echo "    -f | --file              Show the config file list"
     echo "    -h | --help              This help message"
 }
@@ -28,6 +29,10 @@ ShowArchList(){
     :
 }
 
+ShowDiskList(){
+    GetDiskPathList
+}
+
 
 Main(){
     if typeset -f "Show${ListMode}List" 1> /dev/null; then
@@ -42,7 +47,7 @@ Main(){
 ListMode="VM"
 
 # Parse options
-OPTS=("fh") OPTL=("help,architecture")
+OPTS=("fhd") OPTL=("help,architecture,disk")
 ParseCmdOpt SHORT="$(printf "%s" "${OPTS[@]}")" LONG="$(printf "%s," "${OPTL[@]}")" -- "${@}" || exit 1
 eval set -- "${OPTRET[@]}"
 unset OPTRET OPTS OPTL
@@ -51,6 +56,10 @@ while true; do
     case "${1}" in
         --architecture)
             ListMode="Arch"
+            shift 1
+            ;;
+        -d | --disk)
+            ListMode="Disk"
             shift 1
             ;;
         -f | --file)
