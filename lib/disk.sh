@@ -50,7 +50,11 @@ GetPathFromDiskUUID(){
 }
 
 GetDiskUUIDList(){
-    find "$(GetDiskDir)" -mindepth 2 -maxdepth 2 -type l -print0 | xargs -0 -I{} basename {}
+    GetDiskUUIDPathList | xargs -0 -I{} basename {}
+}
+
+GetDiskUUIDPathList(){
+    find "$(GetDiskDir)" -mindepth 2 -maxdepth 2 -type l -print0
 }
 
 GetDiskPathList(){
@@ -63,14 +67,20 @@ GetDiskPathList(){
 
 GetDiskUUIDFromPath(){
     #readlinkf "$(find "$(GetDiskDir)" -name "${1}" -mindepth 2 -maxdepth 2 -type l -print0 )"
+    GetDiskUUIDPathFromPath "${1}" | xargs -I{} basename {}
+}
 
-    readarray -t _UUID_List < <(GetDiskUUIDList)
-    local _uuid _path
-    for _uuid in "${_UUID_List[@]}"; do
-        _path="$(GetPathFromDiskUUID "${_uuid}")"
-        if [[ "${_path}" == "$1" ]]; then
-            echo "${_uuid}"
+# Return UUID-simlimk path
+# GetDiskUUIDPathFromPath <Image Path>
+GetDiskUUIDPathFromPath(){
+    local _DiskDir _TargetPath="${1-""}" _UUID _Path
+    _DiskDir="$(GetDiskDir)"
+    while read -r _UUID_FullPath; do
+        _UUID="$(basename "${_UUID_FullPath}")"
+        _Path="$(readlinkf "${_UUID}")"
+        if [[ "${_Path}" = "${_TargetPath}" ]]; then
+            echo "${_Path}"
             return 0
         fi
-    done
+    done < <(find "${_DiskDir}" -mindepth 2 -maxdepth 2 -type l)
 }
