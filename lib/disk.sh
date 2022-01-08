@@ -8,6 +8,12 @@ AddNewDisk(){
         return 1
     }
 
+
+    GetDiskPathList | grep -qx "$_DiskFile" && {
+        MsgError "This file has already been added."
+        MsgError "UUID is $(GetDiskUUIDFromPath "${_DiskFile}")"
+        exit 1
+    }
     
     while true; do
         _UUID="$(uuidgen)"
@@ -51,5 +57,19 @@ GetDiskPathList(){
     local _uuid
     for _uuid in "${_UUID_List[@]}"; do
         GetPathFromDiskUUID "${_uuid}"
+    done
+}
+
+GetDiskUUIDFromPath(){
+    #readlinkf "$(find "$(GetDiskDir)" -name "${1}" -mindepth 2 -maxdepth 2 -type l -print0 )"
+
+    readarray -t _UUID_List < <(GetDiskUUIDList)
+    local _uuid _path
+    for _uuid in "${_UUID_List[@]}"; do
+        _path="$(GetPathFromDiskUUID "${_uuid}")"
+        if [[ "${_path}" == "$1" ]]; then
+            echo "${_uuid}"
+            return 0
+        fi
     done
 }
