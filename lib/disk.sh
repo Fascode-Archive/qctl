@@ -21,13 +21,13 @@ AddNewDisk(){
     done
 }
 
-# GetPathFromUUID <UUID>
-GetPathFromUUID(){
+# GetPathFromDiskUUID <UUID>
+GetPathFromDiskUUID(){
     local _DiskDir _UUID="${1-""}"
     _DiskDir="$(GetDiskDir)"
 
     [[ -z "${_UUID}" ]] && {
-        MsgError "Usage: GetPathFromUUID <UUID>"
+        MsgError "Usage: GetPathFromDiskUUID <UUID>"
         return 1
     }
 
@@ -40,4 +40,16 @@ GetPathFromUUID(){
     }
 
     readlinkf "$(find "${_DiskDir}" -name "${_UUID}" -mindepth 2 -maxdepth 2 -type l)"
+}
+
+GetDiskUUIDList(){
+    find "$(GetDiskDir)" -mindepth 2 -maxdepth 2 -type l -print0 | xargs -0 -I{} basename {}
+}
+
+GetDiskPathList(){
+    readarray -t _UUID_List < <(GetDiskUUIDList)
+    local _uuid
+    for _uuid in "${_UUID_List[@]}"; do
+        GetPathFromDiskUUID "${_uuid}"
+    done
 }
