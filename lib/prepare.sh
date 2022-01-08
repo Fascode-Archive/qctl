@@ -8,10 +8,10 @@ MakeNewDir(){
     }
 
     for _Dir in "${@}" ; do
-        { [[ ! -d "${_Dir}" ]] && [[ ! -e "${_Dir}" ]]; } && {
+        if [[ ! -d "${_Dir}" ]] && [[ ! -e "${_Dir}" ]]; then
             MsgWarn "${_Dir} was not found. Creating ..."
             mkdir -p "${_Dir}"
-        }
+        fi
     done
 }
 
