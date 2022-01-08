@@ -1,16 +1,26 @@
 %COMMON_CODE%
 
 HelpDoc(){
-    echo "usage qctl-add [option] [Name]"
+    echo "usage qctl-add [option] [Type] [Name or Path]"
     echo
-    echo "Add new virtual machine" 
+    echo "Add new virtual machine or new disk" 
+    echo " Type:"
+    echo "    disk                     Add disk to datebase"
+    echo "    vm                       Add new virtual machine"
     echo
     echo " General options:"
     echo "    -h | --help              This help message"
 }
 
 Main(){
-    CreateNewVM "${Name}"
+    case "${Type}" in
+        "vm")
+            CreateNewVM "${Name}"
+            ;;
+        "disk")
+            AddNewDisk "${Name}"
+            ;;
+    esac
 }
 
 # Parse options
@@ -36,6 +46,7 @@ while true; do
     esac
 done
 
-Name="${1-""}"
+Type="${1-""}"
+Name="${2-""}"
 
 Main
