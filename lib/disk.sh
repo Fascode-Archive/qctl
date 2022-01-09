@@ -1,3 +1,8 @@
+# ディスクタイプ一覧
+# - CD
+# -
+
+
 # AddNewDisk <Type> <Path>
 AddNewDisk(){
     local _DiskDir _DiskFile="${1}" _DiskType="${2-"None"}" _UUID _Link

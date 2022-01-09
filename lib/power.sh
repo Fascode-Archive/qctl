@@ -38,14 +38,22 @@ StartVMWithQemu(){
     _GetVMConfigFromAll Disks
     _GetVMConfigFromAll Memory
     _GetVMConfigFromAll KVM
-    readarray -t _DiskList < <(
-        while read -r _Disk; do
-            IsCorrectDiskUUID "${_Disk}" || {
-                MsgWarn "$_Disk is missing UUID." >&2
-                continue
-            }
-            echo "${_Disk}"
-        done < <(tr "," "\n" <<< "${_VMConfig["Disks"]}"))
+    while read -r _Disk; do
+        IsCorrectDiskUUID "${_Disk}" || {
+            MsgWarn "$_Disk is missing UUID." >&2
+            continue
+        }
+        case "$(GetDiskTypeFromUUID "${_Disk}")" in
+            "CD")
+                _CdUUIDList+=("${_Disk}")
+                _CdPathList+=("$(GetPathFromDiskUUID "${_Disk}")")
+                ;;
+            "None")
+                MsgError "The type of $_Disk is \"None\", which is not supported currently."
+                ;;
+        esac
+    done < <(tr "," "\n" <<< "${_VMConfig["Disks"]}")
+    _AllTypeDiskPathList=("${_CdPathList[@]}")
 
     #-- Configure arguments --#
 
@@ -53,6 +61,7 @@ StartVMWithQemu(){
     [[ "${_VMConfig["KVM"]}" = true ]] && _Qemu_Args+=("-enable-kvm")
 
     # Disks
+    (( "${#_AllTypeDiskPathList[@]}" >= 1 )) || MsgWarn "ディスクが1つも指定されていません"
     PrintArray  "${_DiskList[@]}"
 
     
