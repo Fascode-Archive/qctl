@@ -103,21 +103,22 @@ RemoveDisk(){
 
     if IsUUID "${_Target}"; then
         MsgDebug "$_Target is UUID"
-        _Target="$(GetPathFromDiskUUID "${_Target}")"
+        _Target="$(GetDiskUUIDPathFromUUID "${_Target}")"
     else
         MsgDebug "$_Target is path."
         if ! IsUUID "$(basename "${_Target}")"; then
-            MsgDebug "Get UUID from path"
+            MsgDebug "Get UUID path from disk path"
             _Target="$(GetDiskUUIDPathFromPath "${_Target}")"
         fi
     fi
 
     #_Target="$(GetDiskUUIDPathFromUUID "${_Target}")"
     MsgDebug "Remove ${_Target}"
-    [[ -e "$_Target" ]] && {
-        rm -f "${_Target}"
+    [[ -h "$_Target" ]] && {
+        RemoveFile "${_Target}"
         MsgInfo "$_Target was successfully removed"
         return 0
     }
+    return 0
 }
 
