@@ -50,11 +50,11 @@ GetPathFromDiskUUID(){
 }
 
 GetDiskUUIDList(){
-    GetDiskUUIDPathList | xargs -0 -I{} basename {}
+    GetDiskUUIDPathList | xargs -I{} basename {}
 }
 
 GetDiskUUIDPathList(){
-    find "$(GetDiskDir)" -mindepth 2 -maxdepth 2 -type l -print0
+    find "$(GetDiskDir)" -mindepth 2 -maxdepth 2 -type l
 }
 
 GetDiskPathList(){
@@ -122,3 +122,21 @@ RemoveDisk(){
     return 0
 }
 
+
+GetDiskTypeFromUUID(){
+    local _UUID="${1}" _UUID_FullPath
+    _UUID_FullPath="$(GetDiskUUIDPathFromUUID "${_UUID}")"
+    basename "$(dirname "${_UUID_FullPath}")"
+}
+
+IsCorrectDiskUUID(){
+    local _UUID="${1}"
+    
+    # シンボリックリンクが存在することの確認
+    GetDiskUUIDList | grep -qx "${_UUID}" || return 1
+
+    # シンボリックリンクの先が存在することの確認
+    [[ -e "$(GetPathFromDiskUUID "${_UUID}")" ]] || return 1
+
+    return 0
+}
