@@ -39,6 +39,7 @@ StartVMWithQemu(){
     _GetVMConfigFromAll Memory
     _GetVMConfigFromAll KVM
     _GetVMConfigFromAll SoundHardware
+    _GetVMConfigFromAll USB
     while read -r _Disk; do
         IsCorrectDiskUUID "${_Disk}" || {
             MsgWarn "$_Disk is missing UUID." >&2
@@ -59,7 +60,7 @@ StartVMWithQemu(){
     #-- Configure arguments --#
 
     # Name
-    _Qemu_Args+=("-name" "${_Qemu_Args["Name"]}")
+    _Qemu_Args+=("-name" "${_VMConfig["Name"]}")
 
     # Disk
     for _Disk in "${_AllTypeDiskPathList[@]}"; do
@@ -82,5 +83,9 @@ StartVMWithQemu(){
     # USB
     [[ "${_VMConfig["USB"]}" = true ]] && _Qemu_Args+=("-usb")
 
-    
+    # Display
+    #_Qemu_Args+=("-display sdl,grab-on-hover=on")
+
+    #-- Start Qemu --#
+    qemu-system-x86_64 "${_Qemu_Args[@]}"
 }
