@@ -1,12 +1,15 @@
 %COMMON_CODE%
 
 HelpDoc(){
-    echo "usage qctl-add [option] [Type] [Name or Path]"
+    echo "usage qctl-add [option] [Type] [Name or Path] [Type Options]"
     echo
     echo "Add new virtual machine or new disk" 
     echo " Type:"
-    echo "    disk                     Add disk to datebase"
-    echo "    vm                       Add new virtual machine"
+    echo "    Disk                     Add disk to datebase"
+    echo "    VM                       Add new virtual machine"
+    echo
+    echo "Disk Options:"
+    echo "    CD                       Set image as CD"
     echo
     echo " General options:"
     echo "    -h | --help              This help message"
@@ -15,10 +18,12 @@ HelpDoc(){
 Main(){
     case "${Type}" in
         "vm")
-            CreateNewVM "${Name}"
+            CreateNewVM "${Name}" "${@}"
             ;;
         "disk")
-            AddNewDisk "${Name}"
+            #local _DiskType="${1-""}"
+            AddNewDisk "${Name}" "${@}"
+            MsgInfo "Add ${Name} as $(GetDiskUUIDPathFromPath "${Name}")"
             ;;
     esac
 }
@@ -49,4 +54,7 @@ done
 Type="${1-""}"
 Name="${2-""}"
 
-Main
+[[ -z "${Name}" ]] || shift 1
+[[ -z "${Type}" ]] || shift 1
+
+Main "${@}"
