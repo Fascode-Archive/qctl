@@ -8,20 +8,7 @@ INI形式で記述されており、Crshiniライブラリを通してQctlから
 
 １つのファイルで複数の仮想マシンを定義することはできません。
 
-## 例
-
-```ini
-[VM]
-Name = Ubuntu
-ConfigVersion = 1.0
-Type = Qemu
-Memory = 4GB
-KVM = true
-Disks = 4B02CAE3-94FA-41CE-B870-FD09B6AA4467
-Keyboard = ja
-QemuArgs = 
-
-```
+## 仕様
 
 INI形式はセクションとキー、値を持っています。
 
