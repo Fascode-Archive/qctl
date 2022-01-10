@@ -38,6 +38,7 @@ StartVMWithQemu(){
     _GetVMConfigFromAll Disks
     _GetVMConfigFromAll Memory
     _GetVMConfigFromAll KVM
+    _GetVMConfigFromAll SoundHardware
     while read -r _Disk; do
         IsCorrectDiskUUID "${_Disk}" || {
             MsgWarn "$_Disk is missing UUID." >&2
@@ -57,12 +58,29 @@ StartVMWithQemu(){
 
     #-- Configure arguments --#
 
+    # Name
+    _Qemu_Args+=("-name" "${_Qemu_Args["Name"]}")
+
+    # Disk
+    for _Disk in "${_AllTypeDiskPathList[@]}"; do
+        _Qemu_Args+=("-drive" "file=${_Disk},if=ide,media=disk,")
+    done
+
     # KVM
     [[ "${_VMConfig["KVM"]}" = true ]] && _Qemu_Args+=("-enable-kvm")
 
     # Disks
     (( "${#_AllTypeDiskPathList[@]}" >= 1 )) || MsgWarn "ディスクが1つも指定されていません"
-    PrintArray  "${_DiskList[@]}"
+    #PrintArray  "${_DiskList[@]}"
+
+    # RAM
+    _Qemu_Args+=("-m" "${_VMConfig["Memory"]}")
+
+    # Sound
+    _Qemu_Args+=("-soundhw" "${_VMConfig["SoundHardware"]}")
+
+    # USB
+    [[ "${_VMConfig["USB"]}" = true ]] && _Qemu_Args+=("-usb")
 
     
 }
