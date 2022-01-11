@@ -1,43 +1,45 @@
-# GetVMConfigValue <VM> <Section> <Param>
-GetVMConfigValue(){
-    local _VMDir _VMName="${1}" _Section="${2}" _Param="${3}"
-    _VMDir="$(GetConfigDir)"
+GetVMUUIDFromName(){
+    local _TargetName="${1-""}" _File _Output=() _Name _UUID
 
-    (( "${#}" == 3 )) || {
-        MsgError "Usage: GetVMConfigValue <VM> <Section> <Param>"
+    [[ -n "${_TargetName}" ]] || {
+       MsgError "UUIDが指定されていません"
+       return 1
+    }
+
+    while read -r _File; do
+        _UUID="$(basename "${_FIle}")"
+        _Name="$(GetVMConfigValue "${_UUID}" "VM" "Name")"
+        if [[ "${_Name}" = "${_TargetName}" ]]; then
+            _Output+=("${_UUID}")
+        fi
+    done < <(GetVMFileList)
+
+    (( "${#_Output[@]}" > 1 )) && {
+        MsgWarn "同じ名前の仮想マシンが複数見つかりました"
+    }
+
+    (( "${#_Output[@]}" <= 0 )) && {
+        MsgError "そのような名前の仮想マシンは見つかりませんでした"
         return 1
     }
 
-    local _VMConfig="${_VMDir}/${_VMName}"
-
-    #shellcheck disable=SC2005
-    eval echo "$(_crshini_get "${_VMConfig}" "$_Section" "${_Param}")"
+    PrintArray "${_Output[@]}"
 }
 
-# SetVMConfigToFile <VM> <Section> <Param> <Value>
-SetVMConfigToFile(){
-    local _VMDir _VMName="${1}" #_Section="${2}" _Param="${3}" _Value="${4}"
+
+GetVMFilePathFromUUID(){
+    local _VMDir _UUID="${1}"
     _VMDir="$(GetConfigDir)"
-
-    (( "${#}" == 4 )) || {
-        MsgError "Usage: SetVMConfigToFile <VM> <Section> <Param> <Value>"
-        return 1
-    }
-
-    local _VMConfig="${_VMDir}/${_VMName}"
-
-    shift 1
-
-    _crshini_set "${_VMConfig}" "${@}"
+    echo "${_VMDir}/$_UUID.conf"
 }
 
-# SetVMStatus <VM> <Param> <Value>
-SetVMStatus(){
-    SetVMConfigToFile "${1}" "Status" "${2}" "${3}"
+GetVMUUIDFromStdinPath(){
+    local _Vm
+    while read -r _Vm; do
+        GetVMUUIDFromPath "${_Vm}"
+    done
 }
 
-# GetVMStatus <VM> <Param>
-GetVMStatus(){
-    GetVMConfigValue "${1}" "Status" "${2}"
+GetVMUUIDFromPath(){
+    basename "${_Vm}" | sed "s|.conf$||g"    
 }
-
