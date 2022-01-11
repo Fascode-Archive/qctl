@@ -16,7 +16,9 @@ GetVMFileList(){
     _VMDir="$(GetConfigDir)"
 
     readarray -t _FileList < <(
-        find "${_VMDir}" -mindepth 1 -maxdepth 1 -type f 
+        while read -r _Vm; do
+            ! IsUUID "$(GetVMUUIDFromPath "${_Vm}")" || echo "${_Vm}"
+        done < <(find "${_VMDir}" -mindepth 1 -maxdepth 1 -type f)
     )
 
     PrintArray "${_FileList[@]}"
