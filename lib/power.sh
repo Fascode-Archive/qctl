@@ -1,19 +1,19 @@
 # StartVM <VM>
 StartVM(){
-    local _VMName="${1=""}"
+    local _VMUUID="${1=""}"
 
-    test -n "$_VMName" || {
-        MsgError "Usage: StartVM <VM>"
+    { test -n "$_VMUUID" || IsUUID "${_VMUUID}"; }|| {
+        MsgError "Usage: StartVM <VMUUID>"
         return 1
     }
 
     local _VMType
-    _VMType=$(GetVMConfigValue "$_VMName" "VM" "Type")
+    _VMType=$(GetVMConfigValue "$_VMUUID" "VM" "Type")
 
     if CheckFunctionDefined "StartVMWith${_VMType}"; then
-        eval "StartVMWith$_VMType" "${_VMName}"
+        eval "StartVMWith$_VMType" "${_VMUUID}"
     else
-        MsgError "Failed to start ${_VMName}.\n${_VMType} does not supported yet."
+        MsgError "Failed to start ${_VMUUID}.\n${_VMType} does not supported yet."
         return 1
     fi
 }
@@ -21,11 +21,12 @@ StartVM(){
 # Start
 StartVMWithQemu(){
     #-- Prepare --#
-    local _VMName="${1}" _GetVMConfigFromAll _VMDir _Qemu_Command _Qemu_Args
+    local _VMUUID="${1}" _GetVMConfigFromAll _VMDir _Qemu_Command _Qemu_Args _VMFile
     declare -A _VMConfig=()
     _VMDir="$(GetConfigDir)"
+    _VMFile="$(GetVMFilePathFromUUID "${_VMUUID}")"
 
-    readarray -t _VmAllCofig < <(_crshini_get_format="lines" _crshini_get "${_VMDir}/${_VMName}" | sed "s|\[ VM \] ||g")
+    readarray -t _VmAllCofig < <(_crshini_get_format="lines" _crshini_get "${_VMFile}" | sed "s|\[ VM \] ||g")
 
     _GetVMConfigFromAll(){
         local _Param="${1}"
