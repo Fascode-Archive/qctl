@@ -8,6 +8,12 @@ CreateNewVM(){
        return 1
     }
 
+    (( "$(GetSameNameVMTimesFromName "${_Name}" 2> /dev/null)" > 1 )) && {
+        MsgError "同じ名前のファイルが既に存在しています。以下の仮想マシンは同じ名前を持っています。"
+        GetVMUUIDFromName "${_Name}" 2> /dev/null | xargs -L 1 echo "- " >&2
+        return 1
+    } 
+
     _ConfigDir="$(GetConfigDir)"
     _FullPath="${_ConfigDir}/$(GenUUID).conf"
 
