@@ -1,5 +1,5 @@
 GetVMList(){
-    WorkInProgress
+    GetVMFileList | GetVMUUIDFromStdinPath
 }
 
 GetArchList(){
