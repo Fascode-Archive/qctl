@@ -1,5 +1,5 @@
 
 %COMMON_CODE%
 
-StartVM "${1}"
+StartVM "$(GetVMUUIDFromName "${1}")"
 
