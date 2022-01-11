@@ -10,7 +10,7 @@ GetVMConfigValue(){
     _VMFile="$(GetVMFilePathFromUUID "${_VMUUID}")"
 
     #shellcheck disable=SC2005
-    eval echo "$(_crshini_get "${_VMConfig}" "$_Section" "${_Param}")"
+    eval echo "$(_crshini_get "${_VMFile}" "$_Section" "${_Param}")"
 }
 
 # SetVMConfigToFile <VM> <Section> <Param> <Value>
@@ -27,7 +27,7 @@ SetVMConfigToFile(){
 
     shift 1
 
-    _crshini_set "${_VMConfig}" "${@}"
+    _crshini_set "${_VMFile}" "${@}"
 }
 
 # SetVMStatus <VM> <Param> <Value>
