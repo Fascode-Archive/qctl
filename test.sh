@@ -29,6 +29,8 @@ eval "$(
         sed "${_CommonCodeLine}r ${_CurrentDir}/src/qctl-common" "${_TargetScript}"
     else
         cat "${_TargetScript}"
-    fi | sed "s|%LIB_DIR%|${_CurrentDir}/lib|g" | \
-    grep -Fxv "${_Grep_Args[@]}"
+    fi | \
+    sed "s|%LIB_DIR%|${_CurrentDir}/lib|g" | \
+    grep -Fxv "${_Grep_Args[@]}" | \
+    sed "s|%DATA_DIR%|${_CurrentDir}/data|g"
     )"
