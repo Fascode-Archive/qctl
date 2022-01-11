@@ -1,5 +1,6 @@
 
 %COMMON_CODE%
 
-StartVM "$(GetVMUUIDFromName "${1}")"
+StartVM "$(GetVMUUIDFromName "${1}")" &
+MsgInfo "$1 has been started."
 
