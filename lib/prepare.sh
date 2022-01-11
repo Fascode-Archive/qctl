@@ -2,7 +2,7 @@
 MakeNewDir(){
     local _Dir
 
-    (( "${#}" < 1 )) && {
+    (( "$#" < 1 )) && {
         MsgError "Usage: MakeNewDir <dir1> <dir2> ..."
         return 1
     }
