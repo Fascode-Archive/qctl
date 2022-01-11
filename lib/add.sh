@@ -17,7 +17,8 @@ CreateNewVM(){
         return 1
     fi
 
-    echo -e "[VM]\nName = ${_Name}" > "${_FullPath}" && {
+    #echo -e "[VM]\nName = ${_Name}" > "${_FullPath}" 
+    sed "s|%VM_NAME%|${_Name}|g" "${DataDir}/Template.conf" > "${_FullPath}" && {
         MsgInfo "$_Name を作成しました"
         return 0
     }
