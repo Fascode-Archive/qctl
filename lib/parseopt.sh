@@ -42,11 +42,11 @@ ParseCmdOpt(){
   done
   
   # Parse actually argument
-  while (( "${#}" > 0 )); do
+  while (( "$#" > 0 )); do
 
     # Long option
     if [[ "${1}" = "--"* ]]; then
-       # Long option with argument
+      # Long option with argument
       if printf "%s\n" "${_LongWithArg[@]}" | grep -qx "${1#--}"; then
         # Check argument
         if [[ "${2}" = "-"* ]]; then
