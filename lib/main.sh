@@ -105,6 +105,7 @@ Librarys=(
     "${QctlLibDir}/list.sh"
     "$QctlLibDir/power.sh"
     "$QctlLibDir/vm.sh"
+    "$QctlLibDir/vmconfig.sh"
     "${QctlLibDir}/disk.sh"
     "${QctlLibDir}/uuid.sh"
 )
