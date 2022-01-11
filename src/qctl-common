@@ -5,6 +5,7 @@ set -Eeu
 # Environment variables set by other scripts
 # Strings will be replaced by test.sh , PKGBUILD or other packaging script
 QctlLibDir="%LIB_DIR%"
+DataDir="%DATA_DIR%"
 
 LoadShells=("${QctlLibDir}/main.sh")
 
