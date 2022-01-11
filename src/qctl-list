@@ -1,5 +1,5 @@
 %COMMON_CODE%
- 
+
 HelpDoc(){
     echo "usage qctl-list [option]"
     echo
@@ -9,18 +9,27 @@ HelpDoc(){
     echo "         --architecture      Show the architecture list"
     echo "    -d | --disk              Show the disk list"
     echo "    -f | --file              Show the config file list"
+    echo "    -n | --name [Name]       Shoe the virtual machines with specific names only"
     echo "    -h | --help              This help message"
 }
 
 ShowVMList(){
-    local _File _Output
-    while read -r _File;do
-        _crshini_get "${_File}" "VM" "Name"
-    done < <(GetVMFileList)
+    if [[ -n "${TargetName}" ]]; then
+        GetVMUUIDFromName "${TargetName}"
+    else
+        local _File _Output
+        while read -r _File;do
+            _crshini_get "${_File}" "VM" "Name"
+        done < <(GetVMFileList)
+    fi
 }
 
 ShowVMFileList(){
-    GetVMFileList
+    if [[ -n "${TargetName}" ]]; then
+        GetVMUUIDFromName "${TargetName}" 2> /dev/null | GetVMFilePathFromStdinUUID
+    else
+        GetVMFileList
+    fi
 }
 
 ShowArchList(){
@@ -46,10 +55,12 @@ Main(){
 }
 
 ListMode="VM"
+TargetName=""
 
 # Parse options
-OPTS=("fhd") OPTL=("help,architecture,disk")
+OPTS=("fhdn:") OPTL=("help" "architecture" "disk" "name:")
 ParseCmdOpt SHORT="$(printf "%s" "${OPTS[@]}")" LONG="$(printf "%s," "${OPTL[@]}")" -- "${@}" || exit 1
+MsgDebug "Parsed command line: ${OPTRET[*]}"
 eval set -- "${OPTRET[@]}"
 unset OPTRET OPTS OPTL
 
@@ -66,6 +77,10 @@ while true; do
         -f | --file)
             ListMode="VMFile"
             shift 1
+            ;;
+        -n | --name)
+            TargetName="${2}"
+            shift 2
             ;;
         -h | --help)
             HelpDoc
