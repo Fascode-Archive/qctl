@@ -1,14 +1,13 @@
 # GetVMConfigValue <VM UUID> <Section> <Param>
 GetVMConfigValue(){
-    local _VMDir _VMName="${1}" _Section="${2}" _Param="${3}"
-    _VMDir="$(GetConfigDir)"
+    local _VMFile _VMUUID="${1}" _Section="${2}" _Param="${3}"
 
     (( "$#" == 3 )) || {
         MsgError "Usage: GetVMConfigValue <VM> <Section> <Param>"
         return 1
     }
 
-    local _VMConfig="${_VMDir}/${_VMName}"
+    _VMFile="$(GetVMFIlePathFromUUID "${_VMUUID}")"
 
     #shellcheck disable=SC2005
     eval echo "$(_crshini_get "${_VMConfig}" "$_Section" "${_Param}")"
@@ -16,7 +15,7 @@ GetVMConfigValue(){
 
 # SetVMConfigToFile <VM> <Section> <Param> <Value>
 SetVMConfigToFile(){
-    local _VMDir _VMName="${1-""}" _Section="${2-""}" _Param="${3-""}" _Value="${4-""}"
+    local _VMFile _VMUUID="${1-""}" _Section="${2-""}" _Param="${3-""}" _Value="${4-""}"
     _VMDir="$(GetConfigDir)"
 
     (( "$#" == 4 )) || {
@@ -24,7 +23,7 @@ SetVMConfigToFile(){
         return 1
     }
 
-    local _VMConfig="${_VMDir}/${_VMName}"
+    _VMFile="$(GetVMFIlePathFromUUID "${_VMUUID}")"
 
     shift 1
 
