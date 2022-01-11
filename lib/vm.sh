@@ -2,12 +2,12 @@ GetVMUUIDFromName(){
     local _TargetName="${1-""}" _File _Output=() _Name _UUID
 
     [[ -n "${_TargetName}" ]] || {
-       MsgError "UUIDが指定されていません"
-       return 1
+        MsgError "UUIDが指定されていません"
+        return 1
     }
 
     while read -r _File; do
-        _UUID="$(basename "${_FIle}")"
+        _UUID="$(GetVMUUIDFromPath "${_File}")"
         _Name="$(GetVMConfigValue "${_UUID}" "VM" "Name")"
         if [[ "${_Name}" = "${_TargetName}" ]]; then
             _Output+=("${_UUID}")
@@ -26,11 +26,28 @@ GetVMUUIDFromName(){
     PrintArray "${_Output[@]}"
 }
 
+# 同じ名前の仮想マシンの数を返します
+GetSameNameVMTimesFromName(){
+    GetVMUUIDFromName "${1}" | wc -l
+}
 
 GetVMFilePathFromUUID(){
-    local _VMDir _UUID="${1}"
+    local _VMDir _UUID="${1-""}"
+
+    IsUUID "${_UUID}" || {
+        MsgError "$_UUID is not UUID"
+        return 1
+    }
+
     _VMDir="$(GetConfigDir)"
     echo "${_VMDir}/$_UUID.conf"
+}
+
+GetVMFilePathFromStdinUUID(){
+    local _UUID
+    while read -r _UUID; do
+        GetVMFilePathFromUUID "${_UUID}"
+    done
 }
 
 GetVMUUIDFromStdinPath(){
@@ -41,5 +58,5 @@ GetVMUUIDFromStdinPath(){
 }
 
 GetVMUUIDFromPath(){
-    basename "${_Vm}" | sed "s|.conf$||g"    
+    basename "${1}" | sed "s|.conf$||g"    
 }
