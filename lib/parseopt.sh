@@ -5,7 +5,9 @@
 # It will return an array named OPTRET
 ParseCmdOpt(){
   local _Arg _Chr _Cnt # Temporary variable for loop
-  local _Long=() _LongWithArg=() _Short=() _ShortWithArg=() _OutArg=() _NoArg=()
+  local _Long=() _LongWithArg=() _Short=() _ShortWithArg=() 
+  local _OutArg=() _NoArg=() # Parsed array
+  local _ParseFinished=false
 
   # 引数一覧を取得
   for _Arg in "${@}"; do
@@ -44,8 +46,13 @@ ParseCmdOpt(){
   # Parse actually argument
   while (( "$#" > 0 )); do
 
-    # Long option
-    if [[ "${1}" = "--"* ]]; then
+    if [[ "${1}" = "--" ]]; then
+      shift 1
+      _NoArg+=("${@}")
+      shift "$#"
+      _ParseFinisheda=true
+      break
+    elif [[ "${1}" = "--"* ]]; then # Long option
       # Long option with argument
       if printf "%s\n" "${_LongWithArg[@]}" | grep -qx "${1#--}"; then
         # Check argument
@@ -65,7 +72,7 @@ ParseCmdOpt(){
       fi
     elif [[ "${1}" = "-"* ]]; then
       local _Shift=0 # 連続したショートオプションの解析後にshiftする数
-      while read -r _Chr; do
+      while read -r _Chr; do # 引数を1文字ずつループ
         if printf "%s\n" "${_ShortWithArg[@]}" | grep -qx "${_Chr}"; then
           # 連続したショートオプションの場合、自分が最後かどうか
           if [[ "${1}" = *"${_Chr}" ]] && [[ ! "${2}" = *"-" ]]; then
