@@ -19,6 +19,8 @@ done
 : "${LibDir="/lib"}"
 : "${BinDir="/bin"}"
 
+BuildMode=""
+TargetPath=""
 
 HelpDoc(){
     echo "usage build.sh [option]"
@@ -31,7 +33,7 @@ HelpDoc(){
     echo "    -i | --install           Build all scripts and install"
     echo "                             Outout directory can be specified"
     echo
-    echo " Instal options:"
+    echo " Install options:"
     echo "    -b | --basedir [dir]     The path of root. etc, bin and lib files will be installed here"
     echo "                             Default: ${BaseDir-""}"
     echo "    -e | --etcdir [dir]      The path of config directory under the base dir"
@@ -57,6 +59,31 @@ unset OPTRET OPTS OPTL
 
 while true; do
     case "${1}" in
+        -s | --script)
+            BuildMode="Script"
+            TargetPath="${2}"
+            shift 1
+            ;;
+        -i | --install)
+            BuildMode="Install"
+            shift 1
+            ;;
+        -b | --basedir)
+            BaseDir="${2}"
+            shift 2
+            ;;
+        -e | --etcdir)
+            EtcDir="${2}"
+            shift 2
+            ;;
+        -l | --libdir)
+            LibDir="${2}"
+            shift 2
+            ;;
+        -c | --bindir)
+            BinDir="$2"
+            shift 2
+            ;;
         -h | --help)
             HelpDoc
             exit 0
