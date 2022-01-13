@@ -13,6 +13,7 @@ LoadShellFIles "${CrshiniList[@]}"
 # Define functions
 GetMainConfigFilePath(){
     local _config=(
+        "${MainConfig-"/etc/qctl.conf"}"
         "${QctlLibDir}/../qctl.conf"
         "${XDG_CONFIG_HOME:-"${HOME}/.config"}/qctl.conf"
         "/etc/qctl.conf"
