@@ -6,6 +6,7 @@ set -Eeu
 # Strings will be replaced by test.sh , PKGBUILD or other packaging script
 QctlLibDir="%LIB_DIR%"
 DataDir="%DATA_DIR%"
+MainConfig="%CONFIG_FILE%"
 
 LoadShells=("${QctlLibDir}/main.sh")
 
