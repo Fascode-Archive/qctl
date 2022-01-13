@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Create new virtual machine
 # CreateNewVM <Name>
 CreateNewVM(){

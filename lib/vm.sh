@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 GetVMUUIDFromName(){
     local _TargetName="${1-""}" _File _Output=() _Name _UUID
 

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 IsUUID(){
     local _UUID="${1-""}"
     [[ "${_UUID//-/}" =~ ^[[:xdigit:]]{32}$ ]] && return 0

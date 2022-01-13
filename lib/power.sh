@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # StartVM <VM>
 StartVM(){
     local _VMUUID="${1=""}"

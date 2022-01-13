@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 GetVMList(){
     GetVMFileList | GetVMUUIDFromStdinPath
 }
@@ -23,4 +24,15 @@ GetVMFileList(){
 
     PrintArray "${_FileList[@]}"
     return 0
+}
+
+
+GetSoundHwListWithDescription(){
+    qemu-system-x86_64  -soundhw help | \
+        sed "1d;\$d" | sed "/^$/d" | \
+        cut -f 1 -d " "
+}
+
+GetSoundHwList(){
+    GetSoundHwListWithDescription | cut -d " " -f 1
 }

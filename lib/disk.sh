@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # ディスクタイプ一覧
 # - CD
 # -

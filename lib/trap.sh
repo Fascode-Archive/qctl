@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 ErrorExitWithLineNo(){
     echo "Unexpected error (Line: ${1})" >&2
     exit "${2}"

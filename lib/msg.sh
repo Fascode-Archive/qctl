@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 MsgCommon(){
     for i in $(seq "$(echo -e "${*}" | wc -l)"); do
         echo -e "${*}" | head -n "${i}" | tail -n 1

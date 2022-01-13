@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # GetVMConfigValue <VM UUID> <Section> <Param>
 GetVMConfigValue(){
     local _VMFile _VMUUID="${1}" _Section="${2}" _Param="${3}"

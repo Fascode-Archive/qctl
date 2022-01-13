@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 CheckFunctionDefined(){
     typeset -f "${1}" 1> /dev/null
 }
