@@ -81,19 +81,22 @@ BuildScript(){
     local _CommonCodeLine
     _CommonCodeLine="$(sed -n "/%COMMON_CODE%/=" "${1}")"
 
-    grep -Fxv "${_Grep_Args[@]}" "${1}" | \
+    echo "#1/usr/bin/env bash"
     if [[ -n "${_CommonCodeLine}" ]]; then
-        sed "${_CommonCodeLine}r ${CurrentDir}/src/qctl-common"
+        sed "${_CommonCodeLine}r ${CurrentDir}/src/qctl-common" "${1}"
     else
         cat "${1}"
     fi | \
+    grep -Fxv "${_Grep_Args[@]}"  | \
     sed '/^$/d' | \
     if [[ "${ExcludeBase}" = true ]]; then
         sed "s|%LIB_DIR%|${LibDir}|g" | \
-        sed "s|%DATA_DIR%|${DataDir}|g"
+        sed "s|%DATA_DIR%|${DataDir}|g" | \
+        sed "s|%CONFIG_FILE%|$EtcDir/qctl.conf|g"
     else
         sed "s|%LIB_DIR%|${LibFullPath}|g" | \
-        sed "s|%DATA_DIR%|${DataFullPath}|g"
+        sed "s|%DATA_DIR%|${DataFullPath}|g" | \
+        sed "s|%CONFIG_FILE%|$EtcFullPath/qctl.conf|g"
     fi
 }
 
